@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="B_Torneo">
+      <HintPath>..\..\B_Torneo\B_Torneo\bin\Debug\net6.0\B_Torneo.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

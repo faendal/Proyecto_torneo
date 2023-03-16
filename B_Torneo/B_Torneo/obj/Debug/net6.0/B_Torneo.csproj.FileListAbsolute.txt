@@ -1,0 +1,12 @@
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\bin\Debug\net6.0\B_Torneo.deps.json
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\bin\Debug\net6.0\B_Torneo.dll
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\bin\Debug\net6.0\B_Torneo.pdb
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\obj\Debug\net6.0\B_Torneo.csproj.AssemblyReference.cache
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\obj\Debug\net6.0\B_Torneo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\obj\Debug\net6.0\B_Torneo.AssemblyInfoInputs.cache
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\obj\Debug\net6.0\B_Torneo.AssemblyInfo.cs
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\obj\Debug\net6.0\B_Torneo.csproj.CoreCompileInputs.cache
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\obj\Debug\net6.0\B_Torneo.dll
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\obj\Debug\net6.0\refint\B_Torneo.dll
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\obj\Debug\net6.0\B_Torneo.pdb
+C:\Prog\UPB\Objetos\5-Torneo\B_Torneo\B_Torneo\obj\Debug\net6.0\ref\B_Torneo.dll

@@ -1,0 +1,20 @@
+Alberto de Lucca|12/12/1999|Arquero|Inglesa|1
+Andres Gonzalez|11/01/1999|Arquero|Inglesa|3
+Camilo Correa|11/06/1999|Defensa|Inglesa|22
+Enrique Andrade|03/12/2000|Defensa|Inglesa|10
+Jorge Duque|06/05/1992|Defensa|Inglesa|7
+Camilo Uribe|07/10/1998|Defensa|Inglesa|14
+Juan Munoz|09/04/2000|Defensa|Inglesa|20
+Daniel Arango|05/03/1995|Medio|Inglesa|40
+Jorge Arboleda|04/07/1999|Medio|Inglesa|24
+David Garcia|03/03/1997|Medio|Inglesa|34
+Ronaldo Rivera|10/04/1996|Medio|Inglesa|9
+Diego Perez|10/03/2000|Medio|Inglesa|28
+Andres Cardona|12/07/1997|Medio|Inglesa|12
+Daniel Del Toro|06/01/2000|Medio|Inglesa|11
+David Usuga|05/03/1999|Delantero|Inglesa|94
+EdiLson Ospina|03/01/1997|Delantero|Inglesa|4
+Fabio Sarmiento|05/09/2000|Delantero|Inglesa|4
+Felipe Osorio|08/11/1998|Delantero|Inglesa|45
+Ivan Martinez|10/12/2001|Delantero|Inglesa|46
+Jorge Angulo|12/10/1998|Delantero|Inglesa|48

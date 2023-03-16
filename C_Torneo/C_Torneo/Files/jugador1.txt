@@ -1,0 +1,20 @@
+Alberto de Lucca|12/28/1999|Arquero|Colombiana|1
+Andres Gonzalez|01/16/1999|Arquero|Colombiana|32
+Camilo Correa|06/11/1999|Defensa|Colombiana|4
+Enrique Andrade|12/03/2000|Defensa|Colombiana|5
+Jorge  Duque|05/06/1992|Defensa|Colombiana|3
+Camilo Uribe|10/05/1998|Defensa|Colombiana|2
+Juan Munoz|04/09/2000|Defensa|Colombiana|30
+Daniel Arango|03/24/1995|Medio|Colombiana|6
+Jorge Arboleda|07/30/1999|Medio|Colombiana|15
+David Garcia|03/03/1997|Medio|Colombiana|10
+Ronaldo Rivera|04/10/1996|Medio|Colombiana|7
+Diego Perez|03/10/2000|Medio|Colombiana|8
+Andres Cardona|07/10/1997|Medio|Colombiana|20
+Daniel Del Toro|01/28/2000|Medio|Colombiana|22
+David Usuga|03/16/1999|Delantero|Colombiana|12
+EdiLson Ospina|01/20/1997|Delantero|Colombiana|11
+Fabio Sarmiento|09/30/2000|Delantero|Colombiana|21
+Felipe Osorio|11/28/1998|Delantero|Colombiana|9
+Ivan Martinez|12/14/2001|Delantero|Colombiana|25
+Jorge Angulo|10/12/1998|Delantero|Colombiana|13
