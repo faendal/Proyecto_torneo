@@ -11,20 +11,19 @@ namespace F_Torneo
         private List<Equipo> l_equipos;
         private static List<Torneo> l_torneos;
         private List<Escenario> l_escenarios;
-        private List<Enfrentamiento> l_enfrentamientos;
+        private List<byte> cantidad_boletas_vender;
 
         public F_principal()
         {
             try
             {
                 InitializeComponent();
+                cantidad_boletas_vender = new List<byte> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                cb_cantidad_boletas.DataSource = cantidad_boletas_vender;
                 l_jugadores = new List<Jugador>();
                 l_tecnicos = new List<Tecnico>();
                 l_equipos = new List<Equipo>();
                 l_torneos = new List<Torneo>();
-                l_enfrentamientos = new List<Enfrentamiento> { new Enfrentamiento(new Equipo("Local"), new Equipo("Visitante")) };
-                cb_enfrentamientos.DataSource = l_enfrentamientos;
-                cb_enfrentamientos.SelectedIndex = 0;
                 l_escenarios = new List<Escenario>
                 {
                     new Escenario("Estadio Atanasio Girardot", "Medellín", 42000),
@@ -217,6 +216,46 @@ namespace F_Torneo
             catch (Exception error) { throw new Exception("Ocurrió un error verificando que no haya jugadores repetidos"); }
         }
 
+        // Método para controlar nombres de equipo repetidos
+        private bool Verificar_Nombres()
+        {
+            try
+            {
+                List<Equipo> l_equipos = lb_Equipos.Items.Cast<Equipo>().ToList();
+                if(l_equipos.Count > 0)
+                {
+                    List<string> l_nombres = new List<string>();
+                    foreach (Equipo equipo in l_equipos) l_nombres.Add(equipo.Nombre);
+                    foreach (string nombre in l_nombres) if (nombre == tb_Equipo.Text.ToUpper()) return true;
+                }
+                return false;
+            }
+            catch (Exception error) { throw new Exception("Ocurrió un error controlando los nombres de equipo repetido"); }
+        }
+
+        // Método del botón cargar torneos
+        private void b_cargar_torneos_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Carga de los torneos desde archivo
+                MessageBox.Show("Seleccione el archivo de los torneos");
+                l_torneos = Cargar_Torneos(Obtener_Ruta());
+                if (l_torneos.Count > 0)
+                {
+                    // Para cada torneo, se inicializa la lista de enfrentamientos con uno "ficticio" por defecto.
+                    foreach (Torneo torneo in l_torneos)
+                    {
+                        torneo.L_enfrentamientos = new List<Enfrentamiento> { new Enfrentamiento(new Equipo("Local"), new Equipo("Visitante")) };
+                    }
+                    // Se inicializa el combobox con el valor por defecto
+                    cb_torneos.DataSource = l_torneos;
+                    cb_torneos.SelectedIndex = 0;
+                }
+            }
+            catch (Exception error) { throw new Exception("Ocurrió un error cargando los torneos\n" + error); }
+        }
+
         // Método del botón para cargar jugadores
         private void b_Cargar_Jugadores_Click(object sender, EventArgs e)
         {
@@ -233,16 +272,13 @@ namespace F_Torneo
         {
             try
             {
-                MessageBox.Show("Seleccione el archivo de los torneos");
-                l_torneos = Cargar_Torneos(Obtener_Ruta());
-
                 if (l_torneos.Count > 0)
                 {
                     MessageBox.Show("Seleccione el archivo de los técnicos");
                     l_tecnicos = Cargar_Tecnico(Obtener_Ruta());
                     lb_Tecnicos.DataSource = l_tecnicos;
                 }
-                else MessageBox.Show("El archivo de torneos seleccionado no es válido");
+                else MessageBox.Show("Seleccione primero un archivo válido de torneos");
 
                 if (l_tecnicos.Count > 0) b_Cargar_tecnico.Enabled = false;
             }
@@ -260,7 +296,8 @@ namespace F_Torneo
                     tb_Equipo.Text.Length > 0 &&
                     !string.IsNullOrEmpty(tb_Equipo.Text) &&
                     !string.IsNullOrWhiteSpace(tb_Equipo.Text) &&
-                    !Verificar_Repetidos())
+                    !Verificar_Repetidos() &&
+                    !Verificar_Nombres())
                 {
                     // Creación del equipo
                     l_equipos.Add(new Equipo(tb_Equipo.Text,
@@ -280,11 +317,11 @@ namespace F_Torneo
                 {
                     MessageBox.Show("No se cumplen los requisitos para inscribir el equipo.\n" +
                                      "Valide que la lista de jugadores se haya cargado y no tenga jugadores previamente inscritos" +
-                                     ", que haya seleccionado un técnico y que el equipo tenga un nombre");
+                                     ", que haya seleccionado un técnico y que el equipo tenga un nombre, y que este no esté repetido");
                     lb_Jugadores.DataSource = null;
                 }
-                
-                
+
+
             }
             catch (Exception error) { throw new Exception("Ocurrió un error creando el equipo\n" + error); }
         }
@@ -294,27 +331,32 @@ namespace F_Torneo
         {
             try
             {
-                List<Equipo> l_equipos_seleccionados = new List<Equipo>();
-                Enfrentamiento partido;
-                DateTime Fecha_hora_enfrentamiento;
-
-                // Verificación de que se encuentren dos equipos seleccionados
-                if (lb_Equipos.SelectedItems.Count != 2) MessageBox.Show("Debe seleccionar dos equipos");
-                else
+                if (cb_torneos.SelectedIndex > 0)
                 {
-                    l_equipos_seleccionados = lb_Equipos.SelectedItems.Cast<Equipo>().ToList();
+                    List<Equipo> l_equipos_seleccionados = new List<Equipo>();
+                    Enfrentamiento partido;
 
-                    // Creación del enfrentamiento y adición a la lista de enfrentamientos
-                    partido = new Enfrentamiento(l_equipos_seleccionados[0],
-                                                 l_equipos_seleccionados[1],
-                                                 dt_Fecha.Value,
-                                                 (Escenario)cb_Escenario.SelectedItem);
-                    l_enfrentamientos.Add(partido);
+                    // Verificación de que se encuentren dos equipos seleccionados
+                    if (lb_Equipos.SelectedItems.Count != 2) MessageBox.Show("Debe seleccionar dos equipos");
+                    else if (dt_Fecha.Value <= DateTime.Now.AddDays(1)) MessageBox.Show("La fecha del partido debe ser por lo menos un día después de la fecha actual");
+                    else
+                    {
+                        l_equipos_seleccionados = lb_Equipos.SelectedItems.Cast<Equipo>().ToList();
 
-                    cb_enfrentamientos.DataSource = null;
-                    cb_enfrentamientos.DataSource = l_enfrentamientos;
-                    cb_enfrentamientos.SelectedIndex = 0;
+                        // Creación del enfrentamiento y adición a la lista de enfrentamientos
+                        partido = new Enfrentamiento(l_equipos_seleccionados[0],
+                                                     l_equipos_seleccionados[1],
+                                                     dt_Fecha.Value,
+                                                     (Escenario)cb_Escenario.SelectedItem,
+                                                     (Torneo)cb_torneos.SelectedItem);
+                        ((Torneo)cb_torneos.SelectedItem).L_enfrentamientos.Add(partido);
+
+                        cb_enfrentamientos.DataSource = null;
+                        cb_enfrentamientos.DataSource = ((Torneo)cb_torneos.SelectedItem).L_enfrentamientos;
+                        cb_enfrentamientos.SelectedIndex = 0;
+                    }
                 }
+                else MessageBox.Show("Seleccione un torneo válido");
             }
             catch (Exception error) { throw new Exception("Ocurrió un error creando el enfrentamiento\n" + error); }
         }
@@ -395,6 +437,7 @@ namespace F_Torneo
             { b_seleccionar_jugador_destacado.Enabled = false; }
         }
 
+        // Método que se emplea cuando se hace cambio de objeto seleccionado en la caja de enfrentamientos
         private void cb_enfrentamientos_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -402,14 +445,14 @@ namespace F_Torneo
                 if (cb_enfrentamientos.SelectedIndex > 0)
                 {
                     Enfrentamiento partido = (Enfrentamiento)cb_enfrentamientos.SelectedItem;
-                    if(partido.Finalizado)
+                    if (partido.Finalizado)
                     {
                         b_finalizar_enfrentamiento.Enabled = false;
                         b_gol_local.Enabled = false;
                         b_gol_visitante.Enabled = false;
                         b_anular_local.Enabled = false;
                         b_anular_visitante.Enabled = false;
-                        if (partido.Mvp != null ) b_seleccionar_jugador_destacado.Enabled = false;
+                        if (partido.Mvp != null) b_seleccionar_jugador_destacado.Enabled = false;
                         else b_seleccionar_jugador_destacado.Enabled = true;
                     }
                     else
@@ -420,6 +463,8 @@ namespace F_Torneo
                         b_anular_visitante.Enabled = true;
                         b_finalizar_enfrentamiento.Enabled = true;
                         b_seleccionar_jugador_destacado.Enabled = true;
+                        tb_enfrentamiento_boleteria.Text = partido.ToString() + " en el estadio " + partido.Escenario.ToString();
+                        cb_taquillas.DataSource = partido.Escenario.L_taquillas;
                     }
                     tb_marcador_local.Text = partido.Goles_local.ToString();
                     tb_marcador_visitante.Text = partido.Goles_visitante.ToString();
@@ -443,6 +488,37 @@ namespace F_Torneo
                 }
             }
             catch (Exception error) { throw new Exception("Ocurrió un error mostrando la información del enfrentamiento"); }
+        }
+
+        // Método que se emplea cuando se hace cambio de objeto seleccionado en la caja de torneos
+        private void cb_torneos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cb_enfrentamientos.DataSource = ((Torneo)cb_torneos.SelectedItem).L_enfrentamientos;
+                cb_enfrentamientos.SelectedIndex = 0;
+            }
+            catch (Exception error) { throw new Exception("Ocurrió un error cambiando la información de los torneos"); }
+        }
+
+        // Método del botón para comprar boletas
+        private void b_comprar_boletas_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cb_enfrentamientos.SelectedIndex > 0)
+                {
+                    Enfrentamiento partido = (Enfrentamiento)cb_enfrentamientos.SelectedItem;
+                    byte taquilla_compra = (byte)cb_taquillas.SelectedIndex;
+                    byte cantidad_boletas = (byte)cb_cantidad_boletas.SelectedItem;
+                    if (!partido.Finalizado)
+                    {
+                        MessageBox.Show(partido.Escenario.L_taquillas[taquilla_compra].Vender_boleta(cantidad_boletas, partido));
+                    }
+                    else MessageBox.Show("El partido para el que intenta comprar las boletas ya finalizó");
+                }
+            }
+            catch (Exception error) { throw new Exception("Ocurrió un error durante la venta de boletas\n" + error); }
         }
     }
 }

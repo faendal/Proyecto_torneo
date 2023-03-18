@@ -21,7 +21,7 @@ namespace B_Torneo.Classes
         public Torneo(string nombre)
         {
             Nombre = nombre;
-            l_enfrentamientos = new List<Enfrentamiento>();
+            L_enfrentamientos = new List<Enfrentamiento>();
         }
 
         public string Nombre
@@ -34,6 +34,12 @@ namespace B_Torneo.Classes
             }
         }
 
-        //metodo agregar enfrentamiento
+        public List<Enfrentamiento> L_enfrentamientos { get => l_enfrentamientos; set => l_enfrentamientos = value; }
+
+        public override string ToString()
+        {
+            return Nombre;
+        }
+
     }
 }

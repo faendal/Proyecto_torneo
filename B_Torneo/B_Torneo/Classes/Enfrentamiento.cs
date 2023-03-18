@@ -8,6 +8,8 @@ namespace B_Torneo.Classes
 {
     public class Enfrentamiento
     {
+        public static ushort numero_boleta = 1;
+
         private Equipo local;
         private Equipo visitante;
         private Jugador mvp;
@@ -16,14 +18,26 @@ namespace B_Torneo.Classes
         private byte goles_visitante;
         private Escenario escenario;
         private bool finalizado;
+        private List<Boleta> l_disponibles;
+        private List<Boleta> l_vendidas;
+        private Torneo torneo_actual;
 
-        public Enfrentamiento(Equipo local, Equipo visitante, DateTime fecha_hora, Escenario escenario)
+        public Enfrentamiento(Equipo local, Equipo visitante, DateTime fecha_hora, Escenario escenario, Torneo torneo_actual)
         {
             this.local = local;
             Visitante = visitante;
             Fecha_hora = fecha_hora;
-            this.escenario = escenario;
+            Escenario = escenario;
             finalizado = false;
+            Torneo_actual = torneo_actual;
+            l_disponibles = new List<Boleta>();
+            l_vendidas = new List<Boleta>();
+            
+            for (ushort i = 0; i < escenario.Capacidad; i++) 
+            {
+                l_disponibles.Add(new Boleta(numero_boleta));
+                numero_boleta++;
+            }
 
             goles_local = 0;
             goles_visitante = 0;
@@ -61,6 +75,11 @@ namespace B_Torneo.Classes
                 else visitante = value;
             }
         }
+
+        public List<Boleta> L_disponibles { get => l_disponibles; set => l_disponibles = value; }
+        public List<Boleta> L_vendidas { get => l_vendidas;  set => l_vendidas = value; }
+        public Torneo Torneo_actual { get => torneo_actual; private set => torneo_actual = value; }
+        public Escenario Escenario { get => escenario; private set => escenario = value; }
 
         public void Anotar_Gol_Local()
         {

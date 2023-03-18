@@ -12,24 +12,20 @@ namespace B_Torneo.Classes
 
         private byte numero;
         private bool abierta;
-        private ushort cantidad_boletas;
-        private List<Boleta> l_disponibles; 
-        private List<Boleta> l_vendidas; 
-        public Taquilla(byte numero, ushort cantidad_boletas) 
+
+        public Taquilla(byte numero) 
         { 
-            this.numero = numero; 
-            abierta = false;
-            this.cantidad_boletas = cantidad_boletas;
-            l_disponibles = new List<Boleta>();
-            l_vendidas = new List<Boleta>();
-            for (int i = 0; i < cantidad_boletas; i++) { l_disponibles.Add(new Boleta()); }
+            Numero = numero;
+            abierta = true;
         }
         public bool Abierta { get => abierta; }
-        public void Abrir_taquilla() 
+        public byte Numero { get => numero; private set => numero = value; }
+
+        public void Abrir_taquilla(Enfrentamiento enfrentamiento) 
         { 
             try 
             { 
-                if (!abierta && l_disponibles.Count > 0) abierta = true; 
+                if (!abierta && enfrentamiento.L_disponibles.Count > 0) abierta = true; 
                 else throw new Exception("No se puede abrir una taquilla que ya está abierta o sin boletas para vender"); 
             } 
             catch (Exception error) { throw new Exception("Ocurrió un error abriendo la caja\n" + error); } 
@@ -44,34 +40,35 @@ namespace B_Torneo.Classes
             catch (Exception error) { throw new Exception("Ocurrió un error cerrando la caja\n" + error); } 
         }
         
-        public void Vender_boleta()
+        public string Vender_boleta(byte cantidad, Enfrentamiento enfrentamiento)
         {
             try
             {
-                if (abierta && l_disponibles.Count > 0)
-                {
-                    l_vendidas.Add(l_disponibles[0]);
-                    l_disponibles.RemoveAt(0);
-                }
-                else throw new Exception("No quedan boletas en esta taquilla");
-            }
-            catch (Exception error) { throw new Exception("Ocurrió un error vendiendo una boleta individual\n" + error); }
-        }
-        public void Vender_boleta(byte cantidad)
-        {
-            try
-            {
-                if (abierta && cantidad <= cantidad_maxima_boletas && l_disponibles.Count >= cantidad)
+                string retorno = "";
+                if (abierta && cantidad <= cantidad_maxima_boletas && enfrentamiento.L_disponibles.Count >= cantidad)
                 {
                     for (byte i = 0; i < cantidad; i++)
                     {
-                        l_vendidas.Add(l_disponibles[0]);
-                        l_disponibles.RemoveAt(0);
+                        enfrentamiento.L_vendidas.Add(enfrentamiento.L_disponibles[0]);
+                        enfrentamiento.L_disponibles.RemoveAt(0);
+                        retorno += "Boleta número: " + enfrentamiento.L_vendidas[i].Numero + "\n" +
+                                   "Torneo: " + enfrentamiento.Torneo_actual + "\n" + 
+                                   "Enfrentamiento: " + enfrentamiento.ToString() + "\n" + 
+                                   "Fecha y Hora: " + enfrentamiento.Fecha_hora.DayOfWeek + ", " +  
+                                   enfrentamiento.Fecha_hora.Day + " of " + enfrentamiento.Fecha_hora.ToString("MMMM") +
+                                   "  " + enfrentamiento.Fecha_hora.Year + ", " + enfrentamiento.Fecha_hora.TimeOfDay + 
+                                   "\n--------------------------------------------------\n";
                     }
+                    return retorno;
                 }
                 else throw new Exception("No se pueden vender más de 10 boletas a un solo cliente o no hay suficientes boletas en esta taquilla");
             }
             catch (Exception error) { throw new Exception("Ocurrió un error vendiendo un conjunto de boletas\n" + error); }
+        }
+
+        public override string ToString()
+        {
+            return "Taquilla #" + numero;
         }
     }
 }

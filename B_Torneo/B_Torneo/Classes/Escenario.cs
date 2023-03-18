@@ -9,13 +9,11 @@ namespace B_Torneo.Classes
     public class Escenario
     {
         public static byte numero_taquilla = 1;
-        private readonly byte taquillas = 25;
+        public static readonly byte taquillas = 25;
 
         private string nombre;
         private string direccion;
         private uint capacidad;
-        private uint boletas;
-
         private List<Taquilla> l_taquillas;
 
         public Escenario(string nombre, string direccion, uint capacidad)
@@ -23,9 +21,12 @@ namespace B_Torneo.Classes
             Nombre = nombre;
             Direccion = direccion;
             Capacidad = capacidad;
-            l_taquillas = new List<Taquilla>();
-            boletas = capacidad;
-            for (byte i = 0; i < taquillas; i++) { Agregar_taquilla((ushort) (boletas / taquillas)); }
+            L_taquillas = new List<Taquilla>();
+            for (byte i = 0; i < taquillas; i++) 
+            { 
+                L_taquillas.Add(new Taquilla(numero_taquilla));
+                numero_taquilla++;
+            }
         }
 
         public string Nombre
@@ -56,21 +57,8 @@ namespace B_Torneo.Classes
             }
         }
 
-        public void Agregar_taquilla(ushort cantidad)
-        {
-            try
-            {
-                if (cantidad < boletas)
-                {
-                    Taquilla taquilla = new Taquilla(numero_taquilla, cantidad); 
-                    l_taquillas.Add(taquilla);
-                    boletas -= cantidad;
-                    numero_taquilla++;
-                }
-                else throw new Exception("La cantidad de boletas entregadas a una taquilla no puede superar el aforo ni la cantidad de boletas restantes");
-            }
-            catch (Exception error) { throw new Exception("Ocurrió un problema agregando la taquilla \n" + error); }
-        }
+        public List<Taquilla> L_taquillas { get => l_taquillas; private set => l_taquillas = value; }
+
         public override string ToString()
         {
             return Nombre;

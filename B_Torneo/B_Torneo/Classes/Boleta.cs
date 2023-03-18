@@ -9,13 +9,13 @@ namespace B_Torneo.Classes
 {
     public class Boleta
     {
-        public static ushort numero_boleta = 1;
-
         private ushort numero;
-        public Boleta()
+        
+        public Boleta(ushort numero)
         {
-            numero = numero_boleta;
-            numero_boleta++;
+            Numero = numero;
         }
+
+        public ushort Numero { get => numero; private set => numero = value; }
     }
 }
