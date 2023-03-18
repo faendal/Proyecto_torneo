@@ -27,6 +27,7 @@ namespace B_Torneo.Classes
                 L_taquillas.Add(new Taquilla(numero_taquilla));
                 numero_taquilla++;
             }
+            numero_taquilla = 1;
         }
 
         public string Nombre
