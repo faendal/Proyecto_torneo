@@ -222,7 +222,7 @@ namespace F_Torneo
             try
             {
                 List<Equipo> l_equipos = lb_Equipos.Items.Cast<Equipo>().ToList();
-                if(l_equipos.Count > 0)
+                if (l_equipos.Count > 0)
                 {
                     List<string> l_nombres = new List<string>();
                     foreach (Equipo equipo in l_equipos) l_nombres.Add(equipo.Nombre);
@@ -428,13 +428,17 @@ namespace F_Torneo
         // Método del botón para escoger el jugador destacado
         private void b_seleccionar_jugador_destacado_Click(object sender, EventArgs e)
         {
-            ((Enfrentamiento)cb_enfrentamientos.SelectedItem).Elegir_Destacado();
-            tb_mvp.Text = ((Enfrentamiento)cb_enfrentamientos.SelectedItem).Mvp.ToString();
+            if (((Enfrentamiento)cb_enfrentamientos.SelectedItem).Finalizado)
+            {
+                ((Enfrentamiento)cb_enfrentamientos.SelectedItem).Elegir_Destacado();
+                tb_mvp.Text = ((Enfrentamiento)cb_enfrentamientos.SelectedItem).Mvp.ToString();
 
-            // Si ya se eligió un jugador destacado, el botón se desactiva
-            if (!string.IsNullOrEmpty(((Enfrentamiento)cb_enfrentamientos.SelectedItem).Mvp.Nombre) ||
-                !string.IsNullOrWhiteSpace(((Enfrentamiento)cb_enfrentamientos.SelectedItem).Mvp.Nombre))
-            { b_seleccionar_jugador_destacado.Enabled = false; }
+                // Si ya se eligió un jugador destacado, el botón se desactiva
+                if (!string.IsNullOrEmpty(((Enfrentamiento)cb_enfrentamientos.SelectedItem).Mvp.Nombre) ||
+                    !string.IsNullOrWhiteSpace(((Enfrentamiento)cb_enfrentamientos.SelectedItem).Mvp.Nombre))
+                { b_seleccionar_jugador_destacado.Enabled = false; }
+            }
+            else MessageBox.Show("No puede escoger el jugador destacado de un partido que no ha finalizado");
         }
 
         // Método que se emplea cuando se hace cambio de objeto seleccionado en la caja de enfrentamientos
@@ -463,7 +467,7 @@ namespace F_Torneo
                         b_anular_visitante.Enabled = true;
                         b_finalizar_enfrentamiento.Enabled = true;
                         b_seleccionar_jugador_destacado.Enabled = true;
-                        tb_enfrentamiento_boleteria.Text = partido.ToString() + " en el estadio " + partido.Escenario.ToString();
+                        tb_enfrentamiento_boleteria.Text = partido.ToString() + ", " + partido.Fecha_hora.ToString("dd/MM/yyyy, hh:mm:ss");
                         cb_taquillas.DataSource = partido.Escenario.L_taquillas;
                     }
                     tb_marcador_local.Text = partido.Goles_local.ToString();

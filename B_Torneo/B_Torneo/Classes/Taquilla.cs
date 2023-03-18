@@ -45,19 +45,21 @@ namespace B_Torneo.Classes
             try
             {
                 string retorno = "";
+                List<Boleta> l_vender = new List<Boleta>();
                 if (abierta && cantidad <= cantidad_maxima_boletas && enfrentamiento.L_disponibles.Count >= cantidad)
                 {
                     for (byte i = 0; i < cantidad; i++)
                     {
                         enfrentamiento.L_vendidas.Add(enfrentamiento.L_disponibles[0]);
+                        l_vender.Add(enfrentamiento.L_disponibles[0]);
                         enfrentamiento.L_disponibles.RemoveAt(0);
-                        retorno += "Boleta número: " + enfrentamiento.L_vendidas[i].Numero + "\n" +
+                        retorno += "Boleta número: " + l_vender[i].Numero + "\n" +
                                    "Torneo: " + enfrentamiento.Torneo_actual + "\n" + 
                                    "Enfrentamiento: " + enfrentamiento.ToString() + "\n" + 
                                    "Fecha y Hora: " + enfrentamiento.Fecha_hora.DayOfWeek + ", " +  
                                    enfrentamiento.Fecha_hora.Day + " of " + enfrentamiento.Fecha_hora.ToString("MMMM") +
                                    "  " + enfrentamiento.Fecha_hora.Year + ", " + enfrentamiento.Fecha_hora.TimeOfDay + 
-                                   "\n--------------------------------------------------\n";
+                                   "\n----------------------------------------------------------------------\n";
                     }
                     return retorno;
                 }

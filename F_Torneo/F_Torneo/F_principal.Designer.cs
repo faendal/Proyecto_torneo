@@ -385,6 +385,7 @@
             // 
             tb_mvp.Location = new Point(16, 297);
             tb_mvp.Name = "tb_mvp";
+            tb_mvp.ReadOnly = true;
             tb_mvp.Size = new Size(278, 27);
             tb_mvp.TabIndex = 10;
             // 
@@ -392,6 +393,7 @@
             // 
             tb_marcador_visitante.Location = new Point(215, 128);
             tb_marcador_visitante.Name = "tb_marcador_visitante";
+            tb_marcador_visitante.ReadOnly = true;
             tb_marcador_visitante.Size = new Size(81, 27);
             tb_marcador_visitante.TabIndex = 7;
             // 
@@ -399,6 +401,7 @@
             // 
             tb_nombre_visitante.Location = new Point(16, 128);
             tb_nombre_visitante.Name = "tb_nombre_visitante";
+            tb_nombre_visitante.ReadOnly = true;
             tb_nombre_visitante.Size = new Size(180, 27);
             tb_nombre_visitante.TabIndex = 6;
             // 
@@ -416,6 +419,7 @@
             // 
             tb_marcador_local.Location = new Point(215, 61);
             tb_marcador_local.Name = "tb_marcador_local";
+            tb_marcador_local.ReadOnly = true;
             tb_marcador_local.Size = new Size(81, 27);
             tb_marcador_local.TabIndex = 5;
             // 
@@ -433,6 +437,7 @@
             // 
             tb_nombre_local.Location = new Point(16, 61);
             tb_nombre_local.Name = "tb_nombre_local";
+            tb_nombre_local.ReadOnly = true;
             tb_nombre_local.Size = new Size(180, 27);
             tb_nombre_local.TabIndex = 4;
             // 
@@ -527,6 +532,7 @@
             // 
             tb_enfrentamiento_boleteria.Location = new Point(16, 51);
             tb_enfrentamiento_boleteria.Name = "tb_enfrentamiento_boleteria";
+            tb_enfrentamiento_boleteria.ReadOnly = true;
             tb_enfrentamiento_boleteria.Size = new Size(280, 27);
             tb_enfrentamiento_boleteria.TabIndex = 0;
             // 
