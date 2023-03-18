@@ -5,7 +5,7 @@ namespace F_Torneo
 {
     public partial class F_principal : Form
     {
-
+        // Creación de las listas que actuan de forma global para el formulario
         private List<Jugador> l_jugadores;
         private List<Tecnico> l_tecnicos;
         private List<Equipo> l_equipos;
@@ -225,6 +225,7 @@ namespace F_Torneo
                 if (l_equipos.Count > 0)
                 {
                     List<string> l_nombres = new List<string>();
+                    // Se recorren los equipos ya registrados y se comparan sus nombres al nombre que se intenta ingresar
                     foreach (Equipo equipo in l_equipos) l_nombres.Add(equipo.Nombre);
                     foreach (string nombre in l_nombres) if (nombre == tb_Equipo.Text.ToUpper()) return true;
                 }
@@ -304,9 +305,12 @@ namespace F_Torneo
                                              lb_Jugadores.Items.Cast<Jugador>().ToList(),
                                              (Tecnico)lb_Tecnicos.SelectedItem));
 
+                    // Asignación de los valores del equipo a la lista gráfica
                     lb_Equipos.DataSource = null;
                     lb_Equipos.DataSource = l_equipos;
 
+                    // Se limpian los elementos utilizados para crear el equipo
+                    // Se elimina al técnico ya utilizado
                     tb_Equipo.Clear();
                     lb_Jugadores.DataSource = null;
                     l_tecnicos.RemoveAt(lb_Tecnicos.SelectedIndex);
@@ -336,9 +340,10 @@ namespace F_Torneo
                     List<Equipo> l_equipos_seleccionados = new List<Equipo>();
                     Enfrentamiento partido;
 
-                    // Verificación de que se encuentren dos equipos seleccionados
+                    // Verificación de que se encuentren dos equipos seleccionados y las fechas sean consistentes
                     if (lb_Equipos.SelectedItems.Count != 2) MessageBox.Show("Debe seleccionar dos equipos");
                     else if (dt_Fecha.Value <= DateTime.Now.AddDays(1)) MessageBox.Show("La fecha del partido debe ser por lo menos un día después de la fecha actual");
+                    else if (dt_Fecha.Value < Torneo.f_inicio || dt_Fecha.Value > Torneo.f_final) MessageBox.Show("La fecha del partido debe estar dentro de los límites de calendario del torneo escogido");
                     else
                     {
                         l_equipos_seleccionados = lb_Equipos.SelectedItems.Cast<Equipo>().ToList();
@@ -349,11 +354,21 @@ namespace F_Torneo
                                                      dt_Fecha.Value,
                                                      (Escenario)cb_Escenario.SelectedItem,
                                                      (Torneo)cb_torneos.SelectedItem);
+
+                        // Añadimos el enfrentamiento recién creado a la lista de enfrentamientos 
+                        // del torneo que se encuentra seleciconado en este momento
+                        // De esta manera hacemos que escogiendo diferentes torneos se tengan
+                        // diferentes enfrentamientos, lo que se puede ver cuando se cambia
+                        // el torneo seleccionado en la parte gráfica
                         ((Torneo)cb_torneos.SelectedItem).L_enfrentamientos.Add(partido);
 
                         cb_enfrentamientos.DataSource = null;
+                        // Se le asigna a la lista gráfica la lista de enfrentamientos actual del torneo seleccionado
                         cb_enfrentamientos.DataSource = ((Torneo)cb_torneos.SelectedItem).L_enfrentamientos;
+                        // Se deja el enfrentamiento por defecto seleccionado
                         cb_enfrentamientos.SelectedIndex = 0;
+                        // Se refresca la numeración de boletas para el próximo enfrentamiento que se cree
+                        Enfrentamiento.numero_boleta = 1;
                     }
                 }
                 else MessageBox.Show("Seleccione un torneo válido");
@@ -446,21 +461,25 @@ namespace F_Torneo
         {
             try
             {
+                // Se verifica que se escoja un enfrentamiento real
                 if (cb_enfrentamientos.SelectedIndex > 0)
                 {
                     Enfrentamiento partido = (Enfrentamiento)cb_enfrentamientos.SelectedItem;
                     if (partido.Finalizado)
                     {
+                        // Si el partido finalizó, se desactivan los botones que no se pueden volver a usar
                         b_finalizar_enfrentamiento.Enabled = false;
                         b_gol_local.Enabled = false;
                         b_gol_visitante.Enabled = false;
                         b_anular_local.Enabled = false;
                         b_anular_visitante.Enabled = false;
+                        // Valida si aún se puede o no escoger jugador del partido
                         if (partido.Mvp != null) b_seleccionar_jugador_destacado.Enabled = false;
                         else b_seleccionar_jugador_destacado.Enabled = true;
                     }
                     else
                     {
+                        //Si el partido no ha finalizado, habilita todos los botones que se permiten y se habilita la boletería
                         b_gol_local.Enabled = true;
                         b_gol_visitante.Enabled = true;
                         b_anular_local.Enabled = true;
@@ -470,6 +489,8 @@ namespace F_Torneo
                         tb_enfrentamiento_boleteria.Text = partido.ToString() + ", " + partido.Fecha_hora.ToString("dd/MM/yyyy, hh:mm:ss");
                         cb_taquillas.DataSource = partido.Escenario.L_taquillas;
                     }
+
+                    // Se otorgan valores a elementos gráficos según el enfrentamiento
                     tb_marcador_local.Text = partido.Goles_local.ToString();
                     tb_marcador_visitante.Text = partido.Goles_visitante.ToString();
                     tb_nombre_local.Text = partido.Local.Nombre;
@@ -478,6 +499,8 @@ namespace F_Torneo
                 }
                 else
                 {
+                    // Si el elemento gráfico apunta a un enfrentamiento ficticio por defecto
+                    // se dessactivan los botones y se limpian los elementos gráficos
                     tb_marcador_local.Clear();
                     tb_marcador_visitante.Clear();
                     tb_nombre_local.Clear();
@@ -499,6 +522,7 @@ namespace F_Torneo
         {
             try
             {
+                // Se ponen disponibles los enfrentamientos del torneo seleccionado
                 cb_enfrentamientos.DataSource = ((Torneo)cb_torneos.SelectedItem).L_enfrentamientos;
                 cb_enfrentamientos.SelectedIndex = 0;
             }
@@ -512,6 +536,9 @@ namespace F_Torneo
             {
                 if (cb_enfrentamientos.SelectedIndex > 0)
                 {
+                    // Se toma la información de los elementos gráficos y se ingresan en el método
+                    // que permite vender las boletas y que retorna un string con el resumen 
+                    // de la compra
                     Enfrentamiento partido = (Enfrentamiento)cb_enfrentamientos.SelectedItem;
                     byte taquilla_compra = (byte)cb_taquillas.SelectedIndex;
                     byte cantidad_boletas = (byte)cb_cantidad_boletas.SelectedItem;

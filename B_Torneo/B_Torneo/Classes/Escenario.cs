@@ -22,6 +22,7 @@ namespace B_Torneo.Classes
             Direccion = direccion;
             Capacidad = capacidad;
             L_taquillas = new List<Taquilla>();
+            // Cada escenario instancia exactamente 25 taquillas
             for (byte i = 0; i < taquillas; i++) 
             { 
                 L_taquillas.Add(new Taquilla(numero_taquilla));

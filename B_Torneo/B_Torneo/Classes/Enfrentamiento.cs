@@ -8,8 +8,14 @@ namespace B_Torneo.Classes
 {
     public class Enfrentamiento
     {
+        /* La clase enfrentamiento es la más utilizada en la parte gráfica. 
+         * Esta contiene la información de todo lo que tiene que ver con los 
+         * partidos, incluídos los equipos, marcadores, premios y boletas*/
+
+        // Número de boleta que aumenta cada vez que una boleta se instancia
         public static ushort numero_boleta = 1;
 
+        // Elementos básicos del enfrentamiento
         private Equipo local;
         private Equipo visitante;
         private Jugador mvp;
@@ -18,8 +24,13 @@ namespace B_Torneo.Classes
         private byte goles_visitante;
         private Escenario escenario;
         private bool finalizado;
+
+        // Listas de boletas, una de las que se pueden vender
+        // y la otra que lleva el registro de las que se han vendido
         private List<Boleta> l_disponibles;
         private List<Boleta> l_vendidas;
+
+        // Torneo seleccionado bajo el que fue creado un enfrentamiento
         private Torneo torneo_actual;
 
         public Enfrentamiento(Equipo local, Equipo visitante, DateTime fecha_hora, Escenario escenario, Torneo torneo_actual)
@@ -33,6 +44,8 @@ namespace B_Torneo.Classes
             l_disponibles = new List<Boleta>();
             l_vendidas = new List<Boleta>();
             
+            // Se obtienen las boletas que se pueden vender de acuerdo a la capacidad
+            // del escenario donde se llevará a cabo el enfrentamiento
             for (ushort i = 0; i < escenario.Capacidad; i++) 
             {
                 l_disponibles.Add(new Boleta(numero_boleta));
@@ -43,6 +56,8 @@ namespace B_Torneo.Classes
             goles_visitante = 0;
         }
 
+        // Constructor dummy creado para instanciar enfrentamientos sencillos
+        // que actúan como opciones por defecto en la parte gráfica
         public Enfrentamiento(Equipo local, Equipo visitante)
         {
             this.local = local;
